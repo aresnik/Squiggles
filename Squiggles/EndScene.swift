@@ -11,40 +11,17 @@ import SwiftUI
 
 class EndScene: SKScene {
     
-    private var gameOverLabel: SKLabelNode
-    private var timeLabel: SKLabelNode
-    private var movesLabel: SKLabelNode
-    private var bestTimeLabel: SKLabelNode
-    private var perfectGameLabel: SKLabelNode
-    private var perfectStreakLabel: SKLabelNode
-    private var longestStreakLabel: SKLabelNode
-    private var playAgainButton: SKLabelNode
-    private var playAgainBoarder: SKShapeNode
+    private var gameOverLabel: SKLabelNode = SKLabelNode()
+    private var timeLabel: SKLabelNode = SKLabelNode()
+    private var movesLabel: SKLabelNode = SKLabelNode()
+    private var bestTimeLabel: SKLabelNode = SKLabelNode()
+    private var perfectGameLabel: SKLabelNode = SKLabelNode()
+    private var perfectStreakLabel: SKLabelNode = SKLabelNode()
+    private var longestStreakLabel: SKLabelNode = SKLabelNode()
+    private var playAgainButton: SKLabelNode = SKLabelNode()
+    private var playAgainBoarder: SKShapeNode = SKShapeNode()
     
-    private var backColor: UIColor
-    
-    override init(size: CGSize) {
-        
-        gameOverLabel = SKLabelNode()
-        timeLabel = SKLabelNode()
-        movesLabel = SKLabelNode()
-        bestTimeLabel = SKLabelNode()
-        perfectGameLabel = SKLabelNode()
-        perfectStreakLabel = SKLabelNode()
-        longestStreakLabel = SKLabelNode()
-        playAgainButton = SKLabelNode()
-        playAgainBoarder = SKShapeNode()
-        
-        backColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
-        
-        super.init(size: size)
-    
-    }
-    required init?(coder aDecoder: NSCoder) {
-        
-        fatalError("init(coder:) has not been implemented")
-        
-    }
+    private var backColor: UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
     
     override func didMove(to view: SKView) {
         
@@ -72,7 +49,7 @@ class EndScene: SKScene {
         
         addChild(timeLabel)
         
-        movesLabel.text = "Moves: \(moves)"
+        movesLabel.text = "Moves: \(moves) of \(boardSize)"
         movesLabel.fontName = "Bold"
         movesLabel.fontSize = 25
         movesLabel.fontColor = SKColor.white
@@ -158,8 +135,8 @@ class EndScene: SKScene {
             let touchedNode = self.atPoint(pointOfTouch)
             
             if touchedNode.name == "playagainboarder" {
-                playAgainButton.fontColor = SKColor.gray
-                playAgainBoarder.strokeColor = SKColor.gray
+                playAgainButton.fontColor = .gray
+                playAgainBoarder.strokeColor = .gray
             }
         }
     }
@@ -172,8 +149,8 @@ class EndScene: SKScene {
             let touchedNode = self.atPoint(pointOfTouch)
             
             if touchedNode.name == "playagainboarder" {
-                playAgainButton.fontColor = SKColor.white
-                playAgainBoarder.strokeColor = SKColor.white
+                playAgainButton.fontColor = .white
+                playAgainBoarder.strokeColor = .white
                 
                  changeScene()
             }

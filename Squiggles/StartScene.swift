@@ -11,26 +11,10 @@ import SwiftUI
 
 class StartScene: SKScene {
     
-    var splashScreen: SKSpriteNode
-    var squigglesLabel: SKLabelNode
+    var splashScreen: SKSpriteNode = SKSpriteNode(imageNamed: "splashScreen")
+    var squigglesLabel: SKLabelNode = SKLabelNode()
 
-    var backColor: UIColor
-    
-    override init(size: CGSize) {
-
-        backColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
-        
-        splashScreen = SKSpriteNode(imageNamed: "splashScreen")
-        squigglesLabel = SKLabelNode()
-        
-        super.init(size: size)
-    
-    }
-    required init?(coder aDecoder: NSCoder) {
-        
-        fatalError("init(coder:) has not been implemented")
-        
-    }
+    var backColor: UIColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.0)
     
     override func didMove(to view: SKView) {
         
@@ -45,7 +29,7 @@ class StartScene: SKScene {
         squigglesLabel.text = "Squiggles"
         squigglesLabel.fontName = "Bold"
         squigglesLabel.fontSize = 70
-        squigglesLabel.fontColor = SKColor.white
+        squigglesLabel.fontColor = .white
         squigglesLabel.horizontalAlignmentMode = .center
         squigglesLabel.position = CGPoint(x: size.width/2,
                                      y: size.height * 0.20 )

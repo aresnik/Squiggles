@@ -25,11 +25,11 @@ class GameScene: SKScene {
     
     private var squiggles: [Squiggle] = []
     private var lines: [Line] = []
-
+    
     // Initial squiggles
     private var squiggles6: [Squiggle] = [
         Squiggle(color: .red,    middle: [0,  6, 12, 18, 24,
-                                     30, 31, 32, 33, 34, 35]),
+                                          30, 31, 32, 33, 34, 35]),
         Squiggle(color: .blue,   middle: [1,  7, 13, 19, 25]),
         Squiggle(color: .green,  middle: [2,  8, 14, 20, 26]),
         Squiggle(color: .orange, middle: [3,  9, 15, 21, 27]),
@@ -38,7 +38,7 @@ class GameScene: SKScene {
     
     private var squiggles7: [Squiggle] = [
         Squiggle(color: .red,    middle: [0,  7, 14, 21, 28, 35,
-                                     42, 43, 44, 45, 46, 47, 48]),
+                                          42, 43, 44, 45, 46, 47, 48]),
         Squiggle(color: .blue,   middle: [1,  8, 15, 22, 29, 36]),
         Squiggle(color: .green,  middle: [2,  9, 16, 23, 30, 37]),
         Squiggle(color: .orange, middle: [3, 10, 17, 24, 31, 38]),
@@ -48,7 +48,7 @@ class GameScene: SKScene {
     
     private var squiggles8: [Squiggle] = [
         Squiggle(color: .red,    middle: [0,  8, 16, 24, 32, 40, 48,
-                                     56, 57, 58, 59, 60, 61, 62, 63]),
+                                          56, 57, 58, 59, 60, 61, 62, 63]),
         Squiggle(color: .blue,   middle: [1,  9, 17, 25, 33, 41, 49]),
         Squiggle(color: .green,  middle: [2, 10, 18, 26, 34, 42, 50]),
         Squiggle(color: .orange, middle: [3, 11, 19, 27, 35, 43, 51]),
@@ -59,7 +59,7 @@ class GameScene: SKScene {
     
     private var squiggles9: [Squiggle] = [
         Squiggle(color: .red,    middle: [0,  9, 18, 27, 36, 45, 54, 63,
-                                     72, 73, 74, 75, 76, 77, 78, 79, 80]),
+                                          72, 73, 74, 75, 76, 77, 78, 79, 80]),
         Squiggle(color: .blue,   middle: [1, 10, 19, 28, 37, 46, 55, 64]),
         Squiggle(color: .green,  middle: [2, 11, 20, 29, 38, 47, 56, 65]),
         Squiggle(color: .orange, middle: [3, 12, 21, 30, 39, 48, 57, 66]),
@@ -71,7 +71,7 @@ class GameScene: SKScene {
     
     private var squiggles10: [Squiggle] = [
         Squiggle(color: .red,    middle: [0, 10, 20, 30, 40, 50, 60, 70, 80,
-                                     90, 91, 92, 93, 94, 95, 96, 97, 98, 99]),
+                                          90, 91, 92, 93, 94, 95, 96, 97, 98, 99]),
         Squiggle(color: .blue,    middle: [1, 11, 21, 31, 41, 51, 61, 71, 81]),
         Squiggle(color: .green,   middle: [2, 12, 22, 32, 42, 52, 62, 72, 82]),
         Squiggle(color: .orange,  middle: [3, 13, 23, 33, 43, 53, 63, 73, 83]),
@@ -168,7 +168,7 @@ class GameScene: SKScene {
     private var color10: [SKColor] = [
         .red, .blue, .green, .orange, .yellow, .gray, .purple, .brown, .cyan, .magenta ].shuffled()
     
-    private var soundPlayer: AVAudioPlayer = AVAudioPlayer()
+    private var soundPlayer: AVAudioPlayer? = AVAudioPlayer()
     private var isConnected: Bool = false
     private var lastDotColor: SKColor = .clear
     private var timer: Timer = Timer()
@@ -178,8 +178,9 @@ class GameScene: SKScene {
     
     private let cols: Int = boardSize
     private let rows: Int = boardSize
+    private let numberOfGrids: Int = boardSize*boardSize
     private let sizeRatio: CGFloat = 6/CGFloat(boardSize)
-    private var wH: Int = 60
+    private let wH: Int =  Int(60*6/CGFloat(boardSize))
     
     struct Squiggle {
         var color: SKColor
@@ -197,14 +198,12 @@ class GameScene: SKScene {
     }
     
     func lineNamesArray() {
-        for i in 0..<rows*cols {
+        for i in 0..<numberOfGrids {
             lineNames.append(String(i))
         }
     }
     
     override func didMove(to view: SKView) {
-        
-        wH = Int(60*sizeRatio)
         
         if boardSize == 6  { color = color6  }
         if boardSize == 7  { color = color7  }
@@ -237,16 +236,16 @@ class GameScene: SKScene {
         selectBoardButton.fontColor = .white
         selectBoardButton.horizontalAlignmentMode = .left
         selectBoardButton.position = CGPoint(x: grid[0].position.x + 15,
-                                  y: size.height - long )
+                                             y: size.height - long )
         selectBoardButton.name = "selectboardbutton"
         
         addChild(selectBoardButton)
         
         selectBoardBoarder = SKShapeNode(rect: CGRect(x: Int(grid[0].position.x),
-                                                    y: Int(size.height - long - 22),
-                                                    width: 150,
-                                                    height: 60),
-                                                    cornerRadius: 30)
+                                                      y: Int(size.height - long - 17),
+                                                      width: 150,
+                                                      height: 50),
+                                         cornerRadius: 25)
         selectBoardBoarder.fillColor = .clear
         selectBoardBoarder.strokeColor = .white
         selectBoardBoarder.lineWidth = 2.5
@@ -260,16 +259,16 @@ class GameScene: SKScene {
         solutionButton.fontColor = .white
         solutionButton.horizontalAlignmentMode = .left
         solutionButton.position = CGPoint(x: size.width*0.56 ,
-                                  y: size.height - long )
+                                          y: size.height - long )
         solutionButton.name = "solutionbutton"
         
         addChild(solutionButton)
         
-        solutionBoarder = SKShapeNode(rect: CGRect(x: Int(size.width*0.53),
-                                                    y: Int(size.height - long - 22),
-                                                    width: 160,
-                                                    height: 60),
-                                                    cornerRadius: 30)
+        solutionBoarder = SKShapeNode(rect: CGRect(x: Int(size.width*0.56 - 14),
+                                                   y: Int(size.height - long - 17),
+                                                   width: 160,
+                                                   height: 50),
+                                      cornerRadius: 25)
         solutionBoarder.fillColor = .clear
         solutionBoarder.strokeColor = .white
         solutionBoarder.lineWidth = 2.5
@@ -288,7 +287,7 @@ class GameScene: SKScene {
         
         addChild(timeLabel)
         
-        movesLabel.text = "Moves: \(moves)"
+        movesLabel.text = "Moves: \(moves) of \(boardSize)"
         movesLabel.fontName = "Bold"
         movesLabel.fontSize = 20
         movesLabel.fontColor = .white
@@ -301,7 +300,7 @@ class GameScene: SKScene {
     }
     
     func popOverDialogue() {
-       
+        
         popOver = SKShapeNode(rect: CGRect(x: Int(self.size.width/2 - 125),
                                            y: Int(self.size.height/2 - 125), width: 250, height: 250))
         popOver.fillColor = .black
@@ -317,7 +316,7 @@ class GameScene: SKScene {
         winLabel.fontColor = .white
         winLabel.horizontalAlignmentMode = .center
         winLabel.position = CGPoint(x: Int(self.size.width/2),
-                                    y: Int(self.size.height/2 + 50))
+                                    y: Int(self.size.height/2 + 40))
         winLabel.zPosition = 4
         winLabel.name = "winlabel"
         
@@ -356,14 +355,13 @@ class GameScene: SKScene {
             let pointOfTouch = touch.location(in: self)
             let touchedNode = self.atPoint(pointOfTouch)
             
-            for i in 0..<rows*cols {
+            for i in 0..<numberOfGrids {
                 if touchedNode == overlay[i] {
-                    start(i: i)
                     if !solution {
                         move(i: i)
+                        drawLine()
+                        countMoves(i: i)
                     }
-                    drawLine()
-                    countMoves(i: i)
                 }
             }
         }
@@ -376,15 +374,11 @@ class GameScene: SKScene {
             let pointOfTouch = touch.location(in: self)
             let touchedNode = self.atPoint(pointOfTouch)
             
-            for i in 0..<rows*cols {
+            for i in 0..<numberOfGrids {
                 if touchedNode == overlay[i] {
+                    start(i: i)
                     deleteLine(i: i)
-                }
-                
-                for i in 0..<rows*cols {
-                    if touchedNode == overlay[i] && !solved {
-                        move(i: i)
-                    }
+                    animateDot(i: i)
                 }
             }
             
@@ -396,7 +390,7 @@ class GameScene: SKScene {
             if touchedNode.name == "solutionboarder" {
                 if !solution {
                     solutionButton.text = "Hide Solution"
-                        middle()
+                    middle()
                     self.children
                         .filter { lineNames.contains($0.name ?? "") }
                         .forEach { node in
@@ -405,7 +399,7 @@ class GameScene: SKScene {
                     solution.toggle()
                 } else {
                     solutionButton.text = "Show Solution"
-                        drawLine()
+                    drawLine()
                     self.children
                         .filter { $0.name == "line" }
                         .forEach { node in
@@ -422,46 +416,47 @@ class GameScene: SKScene {
         }
     }
     
-        override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-    
-            for touch in touches {
-    
-                let pointOfTouch = touch.location(in: self)
-                let touchedNode = self.atPoint(pointOfTouch)
-    
-                for i in 0..<rows*cols {
-                    if touchedNode == overlay[i] {
-                        if !isPairConnected() {
-                            deleteLine(i: i)
-                        }
-                        isSolved()
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        for touch in touches {
+            
+            let pointOfTouch = touch.location(in: self)
+            let touchedNode = self.atPoint(pointOfTouch)
+            
+            for i in 0..<numberOfGrids {
+                if touchedNode == overlay[i] {
+                    if !isPairConnected() {
+                        lines[k].segment.removeAll()
+                        removeLine(i: k)
                     }
-                }
-                
-                if solved && winLabel.name != "winlabel" {
-                    playSoundTada()
-                    popOverDialogue()
-                    print("Solved")
-                }
-                
-                if touchedNode.name == "selectboardboarder" {
-                    selectBoardButton.fontColor = .white
-                    selectBoardBoarder.strokeColor = .white
-                    
-                    self.removeAllChildren()
-                    
-                    changeSceneToSelectBoard()
-                }
-                
-                if touchedNode.name == "okboarder" {
-                    okButton.fontColor = .white
-                    okBoarder.strokeColor = .white
-                    
-                    changeSceneToEnd()
-                    self.removeAllChildren()
+                    isSolved()
                 }
             }
+            
+            if solved && winLabel.name != "winlabel" {
+                playSoundTada()
+                popOverDialogue()
+                print("Solved")
+            }
+            
+            if touchedNode.name == "selectboardboarder" {
+                selectBoardButton.fontColor = .white
+                selectBoardBoarder.strokeColor = .white
+                
+                self.removeAllChildren()
+                
+                changeSceneToSelectBoard()
+            }
+            
+            if touchedNode.name == "okboarder" {
+                okButton.fontColor = .white
+                okBoarder.strokeColor = .white
+                
+                changeSceneToEnd()
+                self.removeAllChildren()
+            }
         }
+    }
     
     func changeSceneToSelectBoard() {
         
@@ -485,489 +480,503 @@ class GameScene: SKScene {
         self.view?.presentScene(sceneToMoveTo, transition: myTransition)
     }
     
-        func board() {
+    func animateDot(i: Int) {
+        
+        let scaleIn = SKAction.scale(to: 1.3, duration: 0.3)
+        let scaleOut = SKAction.scale(to: 1.0, duration: 0.3)
+        let animation = SKAction.sequence([scaleIn, scaleOut])
+        
+        for j in 0..<numberOfGrids {
+            if dot[j].fillColor == dot[i].fillColor {
+                dot[j].run(animation)
+            }
+        }
+    }
+    
+    func board() {
+        
+        grid.removeAll()
+        dot.removeAll()
+        overlay.removeAll()
+        
+        grid.forEach { gridRemove in
+            gridRemove.removeFromParent()
+        }
+        dot.forEach { dotRemove in
+            dotRemove.removeFromParent()
+        }
+        overlay.forEach { overlayRemove in
+            overlayRemove.removeFromParent()
+        }
+        
+        var rect = CGRect()
+        
+        rect.size.width = CGFloat(wH*boardSize)
+        rect.size.height = CGFloat(wH*boardSize)
+        rect.origin.x = size.width/2 - rect.width/2
+        rect.origin.y = size.height/2 - rect.height/2 - CGFloat(wH)
+        
+        
+        var x = rect.minX
+        var y = rect.maxY
+        
+        for i in 0..<numberOfGrids {
             
-            grid.removeAll()
-            dot.removeAll()
-            overlay.removeAll()
+            let mydot = dots.first { $0.dot == i }
             
-            grid.forEach { gridRemove in
-                gridRemove.removeFromParent()
+            grid.append(SKShapeNode(rect: CGRect(x: 0, y: 0, width: wH, height: wH)))
+            dot.append(SKShapeNode(circleOfRadius: CGFloat(wH/2) - 10*sizeRatio))
+            overlay.append(SKShapeNode(rect: CGRect(x: 0, y: 0, width: wH, height: wH)))
+            
+            grid[i].position.x = x
+            grid[i].position.y = y
+            grid[i].fillColor = .clear
+            grid[i].strokeColor = .white
+            grid[i].zPosition = 1
+            
+            dot[i].position.x = x + CGFloat(wH/2)
+            dot[i].position.y = y + CGFloat(wH/2)
+            dot[i].fillColor = mydot?.color ?? .clear
+            dot[i].strokeColor = .clear
+            dot[i].zPosition = 2
+            
+            overlay[i].position.x = x
+            overlay[i].position.y = y
+            overlay[i].fillColor = .clear
+            overlay[i].strokeColor = .clear
+            overlay[i].zPosition = 4
+            
+            x += CGFloat(wH)
+            
+            addChild(grid[i])
+            addChild(dot[i])
+            addChild(overlay[i])
+            
+            // 6x6 Board
+            if boardSize == 6 {
+                if i == 5  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
+                if i == 11 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
+                if i == 17 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
+                if i == 23 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
+                if i == 29 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
             }
-            dot.forEach { dotRemove in
-                dotRemove.removeFromParent()
+            
+            // 7x7 Board
+            if boardSize == 7 {
+                if i == 6  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
+                if i == 13 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
+                if i == 20 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
+                if i == 27 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
+                if i == 34 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
+                if i == 41 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
             }
-            overlay.forEach { overlayRemove in
-                overlayRemove.removeFromParent()
+            
+            // 8x8 Board
+            if boardSize == 8 {
+                if i == 7  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
+                if i == 15 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
+                if i == 23 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
+                if i == 31 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
+                if i == 39 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
+                if i == 47 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
+                if i == 55 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
             }
-    
-            var rect = CGRect()
-    
-            rect.size.width = CGFloat(wH*boardSize)
-            rect.size.height = CGFloat(wH*boardSize)
-            rect.origin.x = size.width/2 - rect.width/2
-            rect.origin.y = size.height/2 - rect.height/2 - CGFloat(wH)
-    
-    
-            var x = rect.minX
-            var y = rect.maxY
-    
-            for i in 0..<rows*cols {
-    
-                let mydot = dots.first { $0.dot == i }
-    
-                grid.append(SKShapeNode(rect: CGRect(x: 0, y: 0, width: wH, height: wH)))
-                dot.append(SKShapeNode(circleOfRadius: CGFloat(wH/2) - 10*sizeRatio))
-                overlay.append(SKShapeNode(rect: CGRect(x: 0, y: 0, width: wH, height: wH)))
-    
-                grid[i].position.x = x
-                grid[i].position.y = y
-                grid[i].fillColor = .clear
-                grid[i].strokeColor = .white
-                grid[i].zPosition = 1
-    
-                dot[i].position.x = x + CGFloat(wH/2)
-                dot[i].position.y = y + CGFloat(wH/2)
-                dot[i].fillColor = mydot?.color ?? .clear
-                dot[i].strokeColor = .clear
-                dot[i].zPosition = 2
-    
-                overlay[i].position.x = x
-                overlay[i].position.y = y
-                overlay[i].fillColor = .clear
-                overlay[i].strokeColor = .clear
-                overlay[i].zPosition = 4
-    
-                x += CGFloat(wH)
-    
-                addChild(grid[i])
-                addChild(dot[i])
-                addChild(overlay[i])
-    
-                // 6x6 Board
-                if boardSize == 6 {
-                    if i == 5  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
-                    if i == 11 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
-                    if i == 17 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
-                    if i == 23 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
-                    if i == 29 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
-                }
-                
-                    // 7x7 Board
-                if boardSize == 7 {
-                    if i == 6  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
-                    if i == 13 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
-                    if i == 20 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
-                    if i == 27 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
-                    if i == 34 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
-                    if i == 41 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
-                }
-                
-                // 8x8 Board
-                if boardSize == 8 {
-                    if i == 7  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
-                    if i == 15 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
-                    if i == 23 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
-                    if i == 31 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
-                    if i == 39 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
-                    if i == 47 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
-                    if i == 55 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
-                }
-                
-                // 9x9 Board
-                if boardSize == 9 {
-                    if i == 8  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
-                    if i == 17 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
-                    if i == 26 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
-                    if i == 35 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
-                    if i == 44 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
-                    if i == 53 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
-                    if i == 62 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
-                    if i == 71 { x = rect.minX; y = rect.maxY - CGFloat(wH*8) }
-                }
-                
-                // 10x10 Board
-                if boardSize == 10 {
-                    if i == 9  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
-                    if i == 19 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
-                    if i == 29 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
-                    if i == 39 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
-                    if i == 49 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
-                    if i == 59 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
-                    if i == 69 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
-                    if i == 79 { x = rect.minX; y = rect.maxY - CGFloat(wH*8) }
-                    if i == 89 { x = rect.minX; y = rect.maxY - CGFloat(wH*9) }
-                }
+            
+            // 9x9 Board
+            if boardSize == 9 {
+                if i == 8  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
+                if i == 17 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
+                if i == 26 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
+                if i == 35 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
+                if i == 44 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
+                if i == 53 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
+                if i == 62 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
+                if i == 71 { x = rect.minX; y = rect.maxY - CGFloat(wH*8) }
+            }
+            
+            // 10x10 Board
+            if boardSize == 10 {
+                if i == 9  { x = rect.minX; y = rect.maxY - CGFloat(wH*1) }
+                if i == 19 { x = rect.minX; y = rect.maxY - CGFloat(wH*2) }
+                if i == 29 { x = rect.minX; y = rect.maxY - CGFloat(wH*3) }
+                if i == 39 { x = rect.minX; y = rect.maxY - CGFloat(wH*4) }
+                if i == 49 { x = rect.minX; y = rect.maxY - CGFloat(wH*5) }
+                if i == 59 { x = rect.minX; y = rect.maxY - CGFloat(wH*6) }
+                if i == 69 { x = rect.minX; y = rect.maxY - CGFloat(wH*7) }
+                if i == 79 { x = rect.minX; y = rect.maxY - CGFloat(wH*8) }
+                if i == 89 { x = rect.minX; y = rect.maxY - CGFloat(wH*9) }
             }
         }
+    }
     
-        func randomizecolors() {
+    func randomizecolors() {
+        for i in 0..<squiggles.count {
+            squiggles[i].color = color[i]
+        }
+    }
+    
+    func save() {
+        perfectGames = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectGames\(boardSize)"))
+        perfectStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectStreak\(boardSize)"))
+        longestStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "longestStreak\(boardSize)"))
+        if message == "PERFECT!" {
+            perfectGames += 1
+            perfectStreak += 1
+        } else {
+            perfectStreak = 0
+        }
+        if perfectStreak > longestStreak {
+            NSUbiquitousKeyValueStore().set(perfectStreak, forKey: "longestStreak\(boardSize)")
+        }
+        elapsedBest = Int(NSUbiquitousKeyValueStore().double(forKey: "elapsedBest\(boardSize)"))
+        if elapsedBest == 0 {
+            elapsedBest = elapsed
+        }
+        if elapsed <= elapsedBest {
+            NSUbiquitousKeyValueStore().set(elapsed, forKey: "elapsedBest\(boardSize)")
+        }
+        NSUbiquitousKeyValueStore().set(perfectGames, forKey: "perfectGames\(boardSize)")
+        NSUbiquitousKeyValueStore().set(perfectStreak, forKey: "perfectStreak\(boardSize)")
+        NSUbiquitousKeyValueStore().set(message, forKey: "message\(boardSize)")
+        NSUbiquitousKeyValueStore().set(time, forKey: "timeCurrent\(boardSize)")
+        NSUbiquitousKeyValueStore().set(moves, forKey: "moves\(boardSize)")
+    }
+    
+    func load() {
+        moves = Int(NSUbiquitousKeyValueStore().double(forKey: "moves\(boardSize)"))
+        perfectGames = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectGames\(boardSize)"))
+        perfectStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectStreak\(boardSize)"))
+        longestStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "longestStreak\(boardSize)"))
+        message = NSUbiquitousKeyValueStore().string(forKey: "message\(boardSize)") ?? ""
+        timeCurrent = NSUbiquitousKeyValueStore().string(forKey: "timeCurrent\(boardSize)") ?? ""
+        elapsedBest = Int(NSUbiquitousKeyValueStore().double(forKey: "elapsedBest\(boardSize)"))
+        timeBest = createTimeString(seconds: elapsedBest)
+    }
+    
+    func drawDots() {
+        for i in 0..<squiggles.count {
+            dots.append(Dot(color: color[i], dot: squiggles[i].middle.first ?? 0))
+            dots.append(Dot(color: color[i], dot: squiggles[i].middle.last ?? 0))
+        }
+    }
+    
+    func middle() {
+        
+        for i in 0..<squiggles.count {
+            
+            let lineToDraw = SKShapeNode()
+            let path = CGMutablePath()
+            
+            path.move(to: position(at: squiggles[i].middle.first ?? 0))
+            for j in 0..<squiggles[i].middle.count {
+                path.addLine(to: position(at: squiggles[i].middle[j]))
+            }
+            lineToDraw.path = path
+            lineToDraw.strokeColor = squiggles[i].color
+            lineToDraw.lineWidth = 15*sizeRatio
+            lineToDraw.zPosition = 3
+            lineToDraw.name = "line"
+            addChild(lineToDraw)
+        }
+    }
+    
+    func drawLine() {
+        for i in 0..<lines.count {
+            
+            let lineToDraw = SKShapeNode()
+            let path = CGMutablePath()
+            
+            path.move(to: position(at: lines[i].segment.first ?? 0))
+            for j in 0..<lines[i].segment.count {
+                path.addLine(to: position(at: lines[i].segment[j]))
+            }
+            lineToDraw.path = path
+            lineToDraw.strokeColor = lines[i].color
+            lineToDraw.lineWidth = 15*sizeRatio
+            lineToDraw.zPosition = 3
+            lineToDraw.name = String(i)
+            addChild(lineToDraw)
+        }
+    }
+    
+    // Convert index to position
+    func position(at index: Int) -> CGPoint {
+        let row = index / rows
+        let col = index % cols
+        return CGPoint(x: CGFloat(col*wH) + dot[0].position.x, y: dot[0].position.y - CGFloat(row*wH))
+    }
+    
+    func randomize() {
+        for _ in 0..<100 {
+            let rnd: Int = Int.random(in: 0..<squiggles.count)
             for i in 0..<squiggles.count {
-                squiggles[i].color = color[i]
-            }
-        }
-    
-        func save() {
-            perfectGames = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectGames\(boardSize)"))
-            perfectStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectStreak\(boardSize)"))
-            longestStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "longestStreak\(boardSize)"))
-            if message == "PERFECT!" {
-                perfectGames += 1
-                perfectStreak += 1
-            } else {
-                perfectStreak = 0
-            }
-            if perfectStreak > longestStreak {
-                NSUbiquitousKeyValueStore().set(perfectStreak, forKey: "longestStreak\(boardSize)")
-            }
-            elapsedBest = Int(NSUbiquitousKeyValueStore().double(forKey: "elapsedBest\(boardSize)"))
-            if elapsedBest == 0 {
-                elapsedBest = elapsed
-            }
-            if elapsed <= elapsedBest {
-                NSUbiquitousKeyValueStore().set(elapsed, forKey: "elapsedBest\(boardSize)")
-            }
-            NSUbiquitousKeyValueStore().set(perfectGames, forKey: "perfectGames\(boardSize)")
-            NSUbiquitousKeyValueStore().set(perfectStreak, forKey: "perfectStreak\(boardSize)")
-            NSUbiquitousKeyValueStore().set(message, forKey: "message\(boardSize)")
-            NSUbiquitousKeyValueStore().set(time, forKey: "timeCurrent\(boardSize)")
-            NSUbiquitousKeyValueStore().set(moves, forKey: "moves\(boardSize)")
-        }
-    
-        func load() {
-            moves = Int(NSUbiquitousKeyValueStore().double(forKey: "moves\(boardSize)"))
-            perfectGames = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectGames\(boardSize)"))
-            perfectStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "perfectStreak\(boardSize)"))
-            longestStreak = Int(NSUbiquitousKeyValueStore().double(forKey: "longestStreak\(boardSize)"))
-            message = NSUbiquitousKeyValueStore().string(forKey: "message\(boardSize)") ?? ""
-            timeCurrent = NSUbiquitousKeyValueStore().string(forKey: "timeCurrent\(boardSize)") ?? ""
-            elapsedBest = Int(NSUbiquitousKeyValueStore().double(forKey: "elapsedBest\(boardSize)"))
-            timeBest = createTimeString(seconds: elapsedBest)
-        }
-    
-        func drawDots() {
-            for i in 0..<squiggles.count {
-                dots.append(Dot(color: color[i], dot: squiggles[i].middle.first ?? 0))
-                dots.append(Dot(color: color[i], dot: squiggles[i].middle.last ?? 0))
-            }
-        }
-    
-        func middle() {
-    
-            for i in 0..<squiggles.count {
-    
-                let lineToDraw = SKShapeNode()
-                let path = CGMutablePath()
-    
-                path.move(to: position(at: squiggles[i].middle.first ?? 0))
-                for j in 0..<squiggles[i].middle.count {
-                    path.addLine(to: position(at: squiggles[i].middle[j]))
-                }
-                lineToDraw.path = path
-                lineToDraw.strokeColor = squiggles[i].color
-                lineToDraw.lineWidth = 15*sizeRatio
-                lineToDraw.zPosition = 3
-                lineToDraw.name = "line"
-                addChild(lineToDraw)
-            }
-        }
-    
-        func drawLine() {
-            for i in 0..<lines.count {
-    
-                let lineToDraw = SKShapeNode()
-                let path = CGMutablePath()
-    
-                path.move(to: position(at: lines[i].segment.first ?? 0))
-                for j in 0..<lines[i].segment.count {
-                    path.addLine(to: position(at: lines[i].segment[j]))
-                }
-                lineToDraw.path = path
-                lineToDraw.strokeColor = lines[i].color
-                lineToDraw.lineWidth = 15*sizeRatio
-                lineToDraw.zPosition = 3
-                lineToDraw.name = String(i)
-                addChild(lineToDraw)
-            }
-        }
-    
-        // Convert index to position
-        func position(at index: Int) -> CGPoint {
-            let row = index / rows
-            let col = index % cols
-            return CGPoint(x: CGFloat(col*wH) + dot[0].position.x, y: dot[0].position.y - CGFloat(row*wH))
-        }
-    
-        func randomize() {
-            for _ in 0..<100 {
-                let rnd: Int = Int.random(in: 0..<squiggles.count)
-                for i in 0..<squiggles.count {
-                    if squiggles[rnd].middle.count > 3 {
-                        if isNeighbor(end1: squiggles[rnd].middle.first ?? 0, end2: squiggles[i].middle.first ?? 0) {
-                            squiggles[i].middle.insert(squiggles[rnd].middle.first ?? 0, at: 0)
-                            squiggles[rnd].middle.removeFirst()
-                        }
-                        if isNeighbor(end1: squiggles[rnd].middle.last ?? 9, end2: squiggles[i].middle.last ?? 9) {
-                            squiggles[i].middle.append(squiggles[rnd].middle.last ?? 9)
-                            squiggles[rnd].middle.removeLast()
-                        }
+                if squiggles[rnd].middle.count > 3 {
+                    if isNeighbor(end1: squiggles[rnd].middle.first ?? 0, end2: squiggles[i].middle.first ?? 0) {
+                        squiggles[i].middle.insert(squiggles[rnd].middle.first ?? 0, at: 0)
+                        squiggles[rnd].middle.removeFirst()
+                    }
+                    if isNeighbor(end1: squiggles[rnd].middle.last ?? 9, end2: squiggles[i].middle.last ?? 9) {
+                        squiggles[i].middle.append(squiggles[rnd].middle.last ?? 9)
+                        squiggles[rnd].middle.removeLast()
                     }
                 }
             }
-            randomizecolors()
-            drawDots()
-            moves = 0
-            elapsedTime()
         }
+        randomizecolors()
+        drawDots()
+        moves = 0
+        elapsedTime()
+    }
     
-        func start(i: Int) {
-            let dot = dots.first { $0.dot == i }
-            for j in 0..<lines.count {
-                if lines[j].color == dot?.color {
-                    k = j
-                }
+    func start(i: Int) {
+        let dot = dots.first { $0.dot == i }
+        for j in 0..<lines.count {
+            if lines[j].color == dot?.color {
+                k = j
             }
         }
+    }
     
-        func elapsedTime() {
-            elapsed = 0
-            time = "00:00"
+    func elapsedTime() {
+        elapsed = 0
+        time = "00:00"
+        timer.invalidate()
+        if !timer.isValid {
+            timer.fire()
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] timer in
+                elapsed += 1
+                time = createTimeString(seconds: elapsed)
+                timeLabel.text = "Time: \(time)"
+            }
+        } else {
             timer.invalidate()
-            if !timer.isValid {
-                timer.fire()
-                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [self] timer in
-                    elapsed += 1
-                    time = createTimeString(seconds: elapsed)
-                    timeLabel.text = "Time: \(time)"
-                }
-            } else {
-                timer.invalidate()
+        }
+    }
+    
+    func createTimeString(seconds: Int) -> String {
+        let m: Int = (seconds/60) % 60
+        let s: Int = seconds % 60
+        let a = String(format: "%02u:%02u", m, s)
+        return a
+    }
+    
+    func move(i: Int) {
+        let dot = dots.first { $0.dot == i }
+        if isWalkingBack(i: i) && !isConnected {
+            lines[k].segment.removeLast()
+            removeLine(i: k)
+        }
+        if isPairConnected() { return }
+        if lines[k].segment.last != nil {
+            if !isNeighbor(end1: lines[k].segment.last ?? 0, end2: i) {
+                return
             }
         }
-    
-        func createTimeString(seconds: Int) -> String {
-            let m: Int = (seconds/60) % 60
-            let s: Int = seconds % 60
-            let a = String(format: "%02u:%02u", m, s)
-            return a
+        if (dot != nil && lines[k].color == dot?.color) || (lines[k].segment.last != nil && dot == nil) {
+            lines[k].segment.append(i)
         }
+        if hasDuplicateLines(in: lines) {
+            lines[k].segment.removeLast()
+            removeLine(i: k)
+            //            deleteIntersectedLine(i: i)
+        }
+    }
     
-        func move(i: Int) {
-            let dot = dots.first { $0.dot == i }
-            if isWalkingBack(i: i) && !isConnected {
-                lines[k].segment.removeLast()
-                self.children
-                    .filter { $0.name == String(k)}
-                    .forEach { node in
-                        node.removeFromParent()
+    func isWalkingBack(i: Int) -> Bool {
+        if lines[k].segment.contains(i) {
+            return true
+        }
+        return false
+    }
+    
+    func deleteLine(i: Int) {
+        for j in 0..<lines.count {
+            if lines[j].segment.contains(i) {
+                lines[j].segment.removeAll()
+                removeLine(i: j)
+            }
+        }
+    }
+    
+    func removeLine(i: Int) {
+        self.children
+            .filter { $0.name == String(i)}
+            .forEach { node in
+                node.removeFromParent()
+            }
+    }
+    
+    func deleteIntersectedLine(i: Int) {
+        for j in 0..<lines.count {
+            if lines[j].segment.contains(i) {
+                for i in 0..<squiggles.count {
+                    if (lines[j].segment.first == squiggles[i].middle.first &&
+                        lines[j].segment.last  == squiggles[i].middle.last) ||
+                        (lines[j].segment.first == squiggles[i].middle.last  &&
+                         lines[j].segment.last  == squiggles[i].middle.first) {
+                        lines[j].segment.removeAll()
                     }
-            }
-            if isPairConnected() { return }
-            if lines[k].segment.last != nil {
-                if !isNeighbor(end1: lines[k].segment.last ?? 0, end2: i) {
-                    return
                 }
             }
-            if (dot != nil && lines[k].color == dot?.color) || (lines[k].segment.last != nil && dot == nil) {
-                lines[k].segment.append(i)
-            }
-            if hasDuplicateLines(in: lines) {
-                lines[k].segment.removeLast()
-                //            deleteIntersectedLine(i: i)
-            }
         }
+    }
     
-        func isWalkingBack(i: Int) -> Bool {
-            if lines[k].segment.contains(i) {
+    func isPairConnected() -> Bool {
+        for i in 0..<squiggles.count {
+            if (lines[k].segment.first == squiggles[i].middle.first &&
+                lines[k].segment.last  == squiggles[i].middle.last) ||
+                (lines[k].segment.first == squiggles[i].middle.last  &&
+                 lines[k].segment.last  == squiggles[i].middle.first) {
                 return true
             }
+        }
+        return false
+    }
+    
+    func countMoves(i: Int) {
+        if !isConnected {
+            if isPairConnected() {
+                isConnected = true
+                let dot = dots.first { $0.dot == i }
+                if dot?.color != lastDotColor {
+                    moves += 1
+                    movesLabel.text = "Moves: \(moves) of \(boardSize)"
+                    lastDotColor = dot?.color ?? .clear
+                }
+                if moves <= boardSize {
+                    message = "PERFECT!"
+                } else {
+                    message = "SOLVED!"
+                }
+                playSoundMove()
+                let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
+                impactHeavy.impactOccurred()
+            }
+        } else if !isPairConnected() {
+            isConnected = false
+        }
+    }
+    
+    func playSoundMove() {
+        do {
+            let url =  Bundle.main.url(forResource: "move", withExtension: "mp3")
+            soundPlayer = try AVAudioPlayer(contentsOf: url!)
+            soundPlayer?.volume = 0.5
+            soundPlayer?.prepareToPlay()
+            soundPlayer?.play()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func playSoundTada() {
+        do {
+            let url =  Bundle.main.url(forResource: "tada", withExtension: "mp3")
+            soundPlayer = try AVAudioPlayer(contentsOf: url!)
+            soundPlayer?.volume = 0.2
+            soundPlayer?.prepareToPlay()
+            soundPlayer?.play()
+        } catch let error {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func hasDuplicateLines(in lines: [Line]) -> Bool {
+        var set = Set<Int>()
+        for line in lines {
+            for integer in line.segment {
+                if set.contains(integer) {
+                    return true
+                } else {
+                    set.insert(integer)
+                }
+            }
+        }
+        return false
+    }
+    
+    func isNeighbor(end1: Int, end2: Int) -> Bool {
+        if boardSize == 6 {
+            if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 6 ) &&
+                !(end1 == 0  && end2 == 11) && !(end2 ==  0 && end1 == 11) &&
+                !(end1 == 6  && end2 ==  5) && !(end2 ==  6 && end1 ==  5) &&
+                !(end1 == 12 && end2 == 11) && !(end2 == 12 && end1 == 11) &&
+                !(end1 == 18 && end2 == 17) && !(end2 == 18 && end1 == 17) &&
+                !(end1 == 24 && end2 == 23) && !(end2 == 24 && end1 == 23) &&
+                !(end1 == 30 && end2 == 29) && !(end2 == 30 && end1 == 29) {
+                return true
+            }
+        } else if boardSize == 7 {
+            if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 7 ) &&
+                !(end1 == 0  && end2 == 13) && !(end2 ==  0 && end1 == 13) &&
+                !(end1 == 7  && end2 ==  6) && !(end2 ==  7 && end1 ==  6) &&
+                !(end1 == 14 && end2 == 13) && !(end2 == 14 && end1 == 13) &&
+                !(end1 == 21 && end2 == 20) && !(end2 == 21 && end1 == 20) &&
+                !(end1 == 28 && end2 == 27) && !(end2 == 28 && end1 == 27) &&
+                !(end1 == 35 && end2 == 34) && !(end2 == 35 && end1 == 34) &&
+                !(end1 == 42 && end2 == 41) && !(end2 == 42 && end1 == 41) {
+                return true
+            }
+        } else if boardSize == 8 {
+            if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 8 ) &&
+                !(end1 == 0  && end2 == 15) && !(end2 ==  0 && end1 == 15) &&
+                !(end1 == 8  && end2 ==  7) && !(end2 ==  8 && end1 ==  7) &&
+                !(end1 == 16 && end2 == 15) && !(end2 == 16 && end1 == 15) &&
+                !(end1 == 24 && end2 == 23) && !(end2 == 24 && end1 == 23) &&
+                !(end1 == 32 && end2 == 31) && !(end2 == 32 && end1 == 31) &&
+                !(end1 == 40 && end2 == 39) && !(end2 == 40 && end1 == 39) &&
+                !(end1 == 48 && end2 == 47) && !(end2 == 48 && end1 == 47) &&
+                !(end1 == 56 && end2 == 55) && !(end2 == 56 && end1 == 55) {
+                return true
+            }
+        } else if boardSize == 9 {
+            if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 9 ) &&
+                !(end1 == 0  && end2 == 17) && !(end2 ==  0 && end1 == 17) &&
+                !(end1 == 9  && end2 ==  8) && !(end2 ==  9 && end1 ==  8) &&
+                !(end1 == 18 && end2 == 17) && !(end2 == 18 && end1 == 17) &&
+                !(end1 == 27 && end2 == 26) && !(end2 == 27 && end1 == 26) &&
+                !(end1 == 36 && end2 == 35) && !(end2 == 36 && end1 == 35) &&
+                !(end1 == 45 && end2 == 44) && !(end2 == 45 && end1 == 44) &&
+                !(end1 == 54 && end2 == 53) && !(end2 == 54 && end1 == 53) &&
+                !(end1 == 63 && end2 == 62) && !(end2 == 63 && end1 == 62) &&
+                !(end1 == 72 && end2 == 71) && !(end2 == 72 && end1 == 71) {
+                return true
+            }
+        } else if boardSize == 10 {
+            if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 10 ) &&
+                !(end1 == 0  && end2 == 19) && !(end2 ==  0 && end1 == 19) &&
+                !(end1 == 10 && end2 ==  9) && !(end2 == 10 && end1 ==  9) &&
+                !(end1 == 20 && end2 == 19) && !(end2 == 20 && end1 == 19) &&
+                !(end1 == 30 && end2 == 29) && !(end2 == 30 && end1 == 29) &&
+                !(end1 == 40 && end2 == 39) && !(end2 == 40 && end1 == 39) &&
+                !(end1 == 50 && end2 == 49) && !(end2 == 50 && end1 == 49) &&
+                !(end1 == 60 && end2 == 59) && !(end2 == 60 && end1 == 59) &&
+                !(end1 == 70 && end2 == 69) && !(end2 == 70 && end1 == 69) &&
+                !(end1 == 80 && end2 == 79) && !(end2 == 80 && end1 == 79) &&
+                !(end1 == 90 && end2 == 89) && !(end2 == 90 && end1 == 89) {
+                return true
+            }
+        } else {
             return false
         }
+        return false
+    }
     
-        func deleteLine(i: Int) {
-            for j in 0..<lines.count {
-                if lines[j].segment.contains(i) {
-                    lines[j].segment.removeAll()
-                    self.children
-                        .filter { $0.name == String(j)}
-                        .forEach { node in
-                            node.removeFromParent()
-                        }
+    func isSolved() {
+        var count: Int = 0
+        for line in lines {
+            for integer in line.segment {
+                if integer >= 0 && integer <= numberOfGrids {
+                    count += 1
                 }
             }
         }
-    
-        func deleteIntersectedLine(i: Int) {
-            for j in 0..<lines.count {
-                if lines[j].segment.contains(i) {
-                    for i in 0..<squiggles.count {
-                        if (lines[j].segment.first == squiggles[i].middle.first &&
-                            lines[j].segment.last  == squiggles[i].middle.last) ||
-                            (lines[j].segment.first == squiggles[i].middle.last  &&
-                             lines[j].segment.last  == squiggles[i].middle.first) {
-                            lines[j].segment.removeAll()
-                        }
-                    }
-                }
-            }
+        if count == numberOfGrids {
+            solved = true
+            save()
+            timer.invalidate()
         }
-    
-        func isPairConnected() -> Bool {
-            for i in 0..<squiggles.count {
-                if (lines[k].segment.first == squiggles[i].middle.first &&
-                    lines[k].segment.last  == squiggles[i].middle.last) ||
-                    (lines[k].segment.first == squiggles[i].middle.last  &&
-                     lines[k].segment.last  == squiggles[i].middle.first) {
-                    return true
-                }
-            }
-            return false
-        }
-    
-        func countMoves(i: Int) {
-            if !isConnected {
-                if isPairConnected() {
-                    isConnected = true
-                    let dot = dots.first { $0.dot == i }
-                    if dot?.color != lastDotColor {
-                        moves += 1
-                        movesLabel.text = "Moves: \(moves)"
-                        lastDotColor = dot?.color ?? .clear
-                    }
-                    if moves <= boardSize {
-                        message = "PERFECT!"
-                    } else {
-                        message = "SOLVED!"
-                    }
-                    playSoundMove()
-                    let impactHeavy = UIImpactFeedbackGenerator(style: .heavy)
-                    impactHeavy.impactOccurred()
-                }
-            } else if !isPairConnected() {
-                isConnected = false
-            }
-        }
-    
-        func playSoundMove() {
-            do {
-                let url =  Bundle.main.url(forResource: "move", withExtension: "mp3")
-                soundPlayer = try AVAudioPlayer(contentsOf: url!)
-                soundPlayer.volume = 0.5
-                soundPlayer.prepareToPlay()
-                soundPlayer.play()
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        }
-    
-        func playSoundTada() {
-            do {
-                let url =  Bundle.main.url(forResource: "tada", withExtension: "mp3")
-                soundPlayer = try AVAudioPlayer(contentsOf: url!)
-                soundPlayer.volume = 0.2
-                soundPlayer.prepareToPlay()
-                soundPlayer.play()
-            } catch let error {
-                print(error.localizedDescription)
-            }
-        }
-    
-        func hasDuplicateLines(in lines: [Line]) -> Bool {
-            var set = Set<Int>()
-            for line in lines {
-                for integer in line.segment {
-                    if set.contains(integer) {
-                        return true
-                    } else {
-                        set.insert(integer)
-                    }
-                }
-            }
-            return false
-        }
-    
-        func isNeighbor(end1: Int, end2: Int) -> Bool {
-            if boardSize == 6 {
-                if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 6 ) &&
-                    !(end1 == 0  && end2 == 11) && !(end2 ==  0 && end1 == 11) &&
-                    !(end1 == 6  && end2 ==  5) && !(end2 ==  6 && end1 ==  5) &&
-                    !(end1 == 12 && end2 == 11) && !(end2 == 12 && end1 == 11) &&
-                    !(end1 == 18 && end2 == 17) && !(end2 == 18 && end1 == 17) &&
-                    !(end1 == 24 && end2 == 23) && !(end2 == 24 && end1 == 23) &&
-                    !(end1 == 30 && end2 == 29) && !(end2 == 30 && end1 == 29) {
-                    return true
-                }
-            } else if boardSize == 7 {
-                if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 7 ) &&
-                    !(end1 == 0  && end2 == 13) && !(end2 ==  0 && end1 == 13) &&
-                    !(end1 == 7  && end2 ==  6) && !(end2 ==  7 && end1 ==  6) &&
-                    !(end1 == 14 && end2 == 13) && !(end2 == 14 && end1 == 13) &&
-                    !(end1 == 21 && end2 == 20) && !(end2 == 21 && end1 == 20) &&
-                    !(end1 == 28 && end2 == 27) && !(end2 == 28 && end1 == 27) &&
-                    !(end1 == 35 && end2 == 34) && !(end2 == 35 && end1 == 34) &&
-                    !(end1 == 42 && end2 == 41) && !(end2 == 42 && end1 == 41) {
-                    return true
-                }
-            } else if boardSize == 8 {
-                if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 8 ) &&
-                    !(end1 == 0  && end2 == 15) && !(end2 ==  0 && end1 == 15) &&
-                    !(end1 == 8  && end2 ==  7) && !(end2 ==  8 && end1 ==  7) &&
-                    !(end1 == 16 && end2 == 15) && !(end2 == 16 && end1 == 15) &&
-                    !(end1 == 24 && end2 == 23) && !(end2 == 24 && end1 == 23) &&
-                    !(end1 == 32 && end2 == 31) && !(end2 == 32 && end1 == 31) &&
-                    !(end1 == 40 && end2 == 39) && !(end2 == 40 && end1 == 39) &&
-                    !(end1 == 48 && end2 == 47) && !(end2 == 48 && end1 == 47) &&
-                    !(end1 == 56 && end2 == 55) && !(end2 == 56 && end1 == 55) {
-                    return true
-                }
-            } else if boardSize == 9 {
-                if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 9 ) &&
-                    !(end1 == 0  && end2 == 17) && !(end2 ==  0 && end1 == 17) &&
-                    !(end1 == 9  && end2 ==  8) && !(end2 ==  9 && end1 ==  8) &&
-                    !(end1 == 18 && end2 == 17) && !(end2 == 18 && end1 == 17) &&
-                    !(end1 == 27 && end2 == 26) && !(end2 == 27 && end1 == 26) &&
-                    !(end1 == 36 && end2 == 35) && !(end2 == 36 && end1 == 35) &&
-                    !(end1 == 45 && end2 == 44) && !(end2 == 45 && end1 == 44) &&
-                    !(end1 == 54 && end2 == 53) && !(end2 == 54 && end1 == 53) &&
-                    !(end1 == 63 && end2 == 62) && !(end2 == 63 && end1 == 62) &&
-                    !(end1 == 72 && end2 == 71) && !(end2 == 72 && end1 == 71) {
-                    return true
-                }
-            } else if boardSize == 10 {
-                if ( abs(end1 - end2) == 1 || abs(end1 - end2) == 10 ) &&
-                    !(end1 == 0  && end2 == 19) && !(end2 ==  0 && end1 == 19) &&
-                    !(end1 == 10 && end2 ==  9) && !(end2 == 10 && end1 ==  9) &&
-                    !(end1 == 20 && end2 == 19) && !(end2 == 20 && end1 == 19) &&
-                    !(end1 == 30 && end2 == 29) && !(end2 == 30 && end1 == 29) &&
-                    !(end1 == 40 && end2 == 39) && !(end2 == 40 && end1 == 39) &&
-                    !(end1 == 50 && end2 == 49) && !(end2 == 50 && end1 == 49) &&
-                    !(end1 == 60 && end2 == 59) && !(end2 == 60 && end1 == 59) &&
-                    !(end1 == 70 && end2 == 69) && !(end2 == 70 && end1 == 69) &&
-                    !(end1 == 80 && end2 == 79) && !(end2 == 80 && end1 == 79) &&
-                    !(end1 == 90 && end2 == 89) && !(end2 == 90 && end1 == 89) {
-                    return true
-                }
-            } else {
-                return false
-            }
-            return false
-        }
-    
-        func isSolved() {
-            var count: Int = 0
-            for line in lines {
-                for integer in line.segment {
-                    if integer >= 0 && integer < rows*cols {
-                        count += 1
-                    }
-                }
-            }
-            if count >= rows*cols {
-                solved = true
-                save()
-                timer.invalidate()
-            }
-        }
+    }
 }
 
 struct GameSceneView: View {
