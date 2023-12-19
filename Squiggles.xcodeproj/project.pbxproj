@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		46821DE62B2CFC6400C46F3D /* GameKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46821DE52B2CFC6400C46F3D /* GameKitHelper.swift */; };
+		46821DE92B2E463F00C46F3D /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46821DE82B2E463F00C46F3D /* StoreKit.framework */; };
 		46987B9C2B03F64800D640D5 /* SelectBoardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46987B9B2B03F64800D640D5 /* SelectBoardScene.swift */; };
 		46987B9F2B03FCE200D640D5 /* move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46987B9D2B03FCE200D640D5 /* move.mp3 */; };
 		46987BA02B03FCE200D640D5 /* tada.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46987B9E2B03FCE200D640D5 /* tada.mp3 */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		46821DE52B2CFC6400C46F3D /* GameKitHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameKitHelper.swift; sourceTree = "<group>"; };
+		46821DE82B2E463F00C46F3D /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		46987B9B2B03F64800D640D5 /* SelectBoardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectBoardScene.swift; sourceTree = "<group>"; };
 		46987B9D2B03FCE200D640D5 /* move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = move.mp3; sourceTree = "<group>"; };
 		46987B9E2B03FCE200D640D5 /* tada.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tada.mp3; sourceTree = "<group>"; };
@@ -41,17 +45,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46821DE92B2E463F00C46F3D /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46821DE72B2E463F00C46F3D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				46821DE82B2E463F00C46F3D /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		46E14CB22AFE6F8F00D9C9A2 = {
 			isa = PBXGroup;
 			children = (
 				46E14CBD2AFE6F8F00D9C9A2 /* Squiggles */,
 				46E14CBC2AFE6F8F00D9C9A2 /* Products */,
+				46821DE72B2E463F00C46F3D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,6 +86,7 @@
 				46987BA32B03FE9800D640D5 /* EndScene.swift */,
 				46987B9B2B03F64800D640D5 /* SelectBoardScene.swift */,
 				46E14CC42AFE6F8F00D9C9A2 /* GameScene.swift */,
+				46821DE52B2CFC6400C46F3D /* GameKitHelper.swift */,
 				46E14CC62AFE6F8F00D9C9A2 /* GameViewController.swift */,
 				46E14CC82AFE6F8F00D9C9A2 /* Main.storyboard */,
 				46E14CCB2AFE6F9000D9C9A2 /* Assets.xcassets */,
@@ -156,6 +171,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46987BA42B03FE9800D640D5 /* EndScene.swift in Sources */,
+				46821DE62B2CFC6400C46F3D /* GameKitHelper.swift in Sources */,
 				46E14CC52AFE6F8F00D9C9A2 /* GameScene.swift in Sources */,
 				46E14CC72AFE6F8F00D9C9A2 /* GameViewController.swift in Sources */,
 				46E14CBF2AFE6F8F00D9C9A2 /* AppDelegate.swift in Sources */,
@@ -327,7 +343,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexanderresnik.squiggles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -358,7 +374,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0;
+				MARKETING_VERSION = 2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alexanderresnik.squiggles;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

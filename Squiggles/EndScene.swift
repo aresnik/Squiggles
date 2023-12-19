@@ -8,6 +8,7 @@
 import SpriteKit
 import GameplayKit
 import SwiftUI
+import GameKit
 
 class EndScene: SKScene {
     
@@ -29,7 +30,7 @@ class EndScene: SKScene {
         
         gameOverLabel.text = "Game Over"
         gameOverLabel.fontName = "Bold"
-        gameOverLabel.fontSize = 50
+        gameOverLabel.fontSize = 45
         gameOverLabel.fontColor = SKColor.white
         gameOverLabel.horizontalAlignmentMode = .center
         gameOverLabel.position = CGPoint(x: size.width/2,
@@ -125,6 +126,14 @@ class EndScene: SKScene {
         playAgainBoarder.name = "playagainboarder"
         
         addChild(playAgainBoarder)
+        
+        if GKLocalPlayer.local.isAuthenticated {
+            GKAccessPoint.shared.location = .topTrailing
+            GKAccessPoint.shared.showHighlights = true
+            GKAccessPoint.shared.isActive = true
+        } else {
+            print("Game Center not authenticated")
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
